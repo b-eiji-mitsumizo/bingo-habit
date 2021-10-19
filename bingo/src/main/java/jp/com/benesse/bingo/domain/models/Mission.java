@@ -1,6 +1,7 @@
 package jp.com.benesse.bingo.domain.models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ForeignKey;
@@ -17,6 +18,7 @@ import lombok.Setter;
 public class Mission {
 
     @Id
+    @GeneratedValue
     private String id;
 
     private Boolean done;
