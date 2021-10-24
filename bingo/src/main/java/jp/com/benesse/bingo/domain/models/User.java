@@ -1,6 +1,7 @@
 package jp.com.benesse.bingo.domain.models;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 

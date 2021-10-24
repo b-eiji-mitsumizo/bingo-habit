@@ -15,11 +15,4 @@ public class Card {
     @Id
     @GeneratedValue
     private String id;
-
-    public void hoge() {
-        for (int i = 0; i < 10; i++) {
-            System.out.println(i);
-        }
-    }
-
 }
