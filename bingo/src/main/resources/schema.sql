@@ -5,7 +5,6 @@ create table t_category(
 	primary key(id)
 );
 
-
 /* ユーザーの役割を表す。*/
 create table t_role( 
 	id serial NOT NULL,
@@ -17,7 +16,8 @@ create table t_role(
 create table t_user(
 	id serial NOT NULL,
 	name varchar(40) NOT NULL,
-	password varchar(100) NOT NULL,
+	email varchar(100) NOT NULL,
+	password varchar(256) NOT NULL,
 	role_id INTEGER not NULL,
 	primary key(id),
 	foreign key (role_id) references t_role(id)
@@ -27,39 +27,59 @@ create table t_user(
 create table t_card(
 	id serial NOT NULL,
 	user_id INTEGER NOT NULL,
-	card_title VARCHAR(30),
-	centerMission VARCHAR(50), /*コラショの画像のパス*/
+	card_name VARCHAR(30),
 	start_date date,
 	end_date date,
 	primary key(id),
 	foreign key (user_id) references t_user(id)
 );
 
-/* ミッションを表す。*/
-create table t_mission( 
+/* ミッション自身を表す */
+create table t_mission (
 	id serial NOT NULL,
-	card_id INTEGER NOT NULL,
-	mission_place INTEGER NOT NULL,
-	goal_id INTEGER NOT NULL,
-	done boolean not NULL,
-	created_date date not NULL,
+	category_id INTEGER NOT NULL,
+	mission_name varchar(100) NOT NULL,
+	place INTEGER NOT NULL,
 	primary key(id),
-	foreign key (card_id) references t_card(id),
-	foreign key (goal_id) references t_goal(id)
+	foreign key (category_id) references t_category(id)
 );
 
+-- create table t_place (
+-- 	id serial NOT NULL,
+-- 	card_id INTEGER NOT NULL,
+-- 	-- 0, 1, 2, 3, 4, 5, 6, 7, 8のどれか
+-- 	place INTEGER NOT NULL,
+-- 	-- mission_id INTEGER NOT NULL,
+-- 	primary key (card_id, place)
+-- 	foreign key card_id references t_card(id),
+-- 	-- foreign key mission_id references t_mission(id)
+-- );
+
+/* ミッションを表す。*/
+create table t_inserted_mission(
+	id serial NOT NULL,
+	-- place_id INTEGER NOT NULL,
+	mission_id INTEGER NOT NULL,
+	done boolean not NULL,
+	primary key(id),
+	-- foreign key (place_id) references t_place(id),
+	foreign key (mission_id) references t_mission(id)
+);
 
 /* コメントを表す。*/
 create table t_result( 
 	id serial NOT NULL,
-	fail_id INTEGER,
-	success_id INTEGER,
-	user_id INTEGER not NULL,
-	stamp VARCHAR(250), /* URL? */
-	comment VARCHAR(250),
-	commented_date date not NULL,
+	comment varchar(300),
+	inserted_mission_id INTEGER NOT NULL,
+	done_date date NOT NULL,
 	primary key(id),
-	foreign key (fail_id) references t_fail(id),
-	foreign key (success_id) references t_success(id),
-	foreign key (user_id) references t_user(id)
+	foreign key (inserted_mission_id) references t_inserted_mission(id)
+);
+
+create table t_result_picture(
+	id serial NOT NULL,
+	result_id INTEGER NOT NULL,
+	picture varchar(2000) NOT NULL,
+	primary key(id),
+	foreign key (result_id) references t_result(id)
 );
